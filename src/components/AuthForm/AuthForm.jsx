@@ -9,7 +9,7 @@ function AuthForm(props) {
         <Logo />
       </header>
       <h2 className='auth__title'>{props.title}</h2>
-      <form className='form'>
+      <form className='form' onSubmit={props.onSubmit}>
         {props.children}
         <button className='form__submit-btn' type='submit' aria-label={props.textBtn}>
           {props.textBtn}

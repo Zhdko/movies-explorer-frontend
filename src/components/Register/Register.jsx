@@ -7,6 +7,8 @@ function Register(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    props.onRegister(values.email, values.password, values.name);
   }
 
   return (

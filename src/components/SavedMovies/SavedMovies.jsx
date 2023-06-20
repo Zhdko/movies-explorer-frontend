@@ -9,7 +9,7 @@ function SavedMovies(props) {
   return (
     <div>
       <Header loggedIn={true} />
-      <section className='movies'>
+      <section className="movies">
         <SearchForm />
         <MoviesCardList movies={savedMovies} />
       </section>
