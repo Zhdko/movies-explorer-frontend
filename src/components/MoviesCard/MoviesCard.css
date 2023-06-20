@@ -51,6 +51,7 @@
   background-position: cover;
   background-repeat: no-repeat;
   background-size: cover;
+  -webkit-background-size: cover;
   cursor: pointer;
   transition: all 0.3s linear;
 }
@@ -60,15 +61,15 @@
 }
 
 .card__like {
-  background-image: url('../../images/save5d.svg');
+  background: url('../../images/like.svg');
 }
 
 .card__like_active {
-  background-image: url('../../images/save5.svg');
+  background-image: url('../../images/like_active.svg');
 }
 
 .card__delete {
-  background-image: url('../../images/d5.svg');
+  background-image: url('../../images/delete.svg');
 }
 
 @media screen and (max-width: 768px) {
