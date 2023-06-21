@@ -80,6 +80,11 @@
   font-size: 13px;
   line-height: 15.73px;
   color: #fff;
+  align-self: center;
+}
+
+.profile__btn_disabled {
+  color: #8b8b8b;
 }
 
 .profile__btn_type_submit {

@@ -3,15 +3,16 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../Movies/SearchForm/SearchForm';
+import Preloader from '../Preloader/Preloader';
 
 function SavedMovies(props) {
   const savedMovies = movies.filter((movie) => movie.hasOwnProperty('owner'));
   return (
     <div>
-      <Header loggedIn={true} />
-      <section className="movies">
+      <Header loggedIn={props.loggedIn} />
+      <section className='movies'>
         <SearchForm />
-        <MoviesCardList movies={savedMovies} />
+        {props.isLoading ? <Preloader /> : <MoviesCardList movies={savedMovies} />}
       </section>
       <Footer />
     </div>

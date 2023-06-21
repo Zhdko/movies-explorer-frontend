@@ -1,4 +1,4 @@
-import { BASE_URL, BEAT_FILM_MOVIE_API } from './constants';
+import { BASE_URL } from './constants';
 
 export class Api {
   constructor({ baseUrl, headers }) {
@@ -26,14 +26,6 @@ export class Api {
     return fetch(url, options).then(this._checkResponce);
   }
 
-  getMovies() {
-    const movieUrl = `${BEAT_FILM_MOVIE_API}`;
-    return fetch(movieUrl, {
-      headers: this._headers,
-      credentials: 'include',
-    }).then((res) => this._checkResponce(res));
-  }
-
   getUserData() {
     const userInfoUrl = `${this._baseUrl}/users/me`;
     return fetch(userInfoUrl, {
@@ -49,7 +41,7 @@ export class Api {
       credentials: 'include',
       body: JSON.stringify({
         name: userData.name,
-        about: userData.about,
+        email: userData.email,
       }),
     }).then((res) => this._checkResponce(res));
   }

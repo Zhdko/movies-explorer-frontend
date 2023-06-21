@@ -7,6 +7,21 @@ function MoviesCard(props) {
   const location = useLocation();
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const name = movie.nameRU;
+  const cover = 'https://api.nomoreparties.co' + movie.image.url;
+
+  const duration = () => {
+    const minutes = (movie.duration % 60) + 'м';
+    const hours = Math.floor(movie.duration / 60) + 'ч';
+    if (movie.duration > 60) {
+      return hours + ' ' + minutes;
+    } else if (movie.duration === 60) {
+      return hours;
+    } else {
+      return minutes;
+    }
+  };
+
   function toggleFavoriteMovie() {
     setIsFavorite(!isFavorite);
   }
@@ -14,11 +29,11 @@ function MoviesCard(props) {
   function deleteFavoriteMovie() {}
 
   return (
-    <li className='card'>
+    <li className='card' key={movie.movieId}>
       <div className='card__info'>
         <div className='card__discription'>
-          <h2 className='card__title'>{movie.nameRU}</h2>
-          <p className='card__duration'>{movie.duration}</p>
+          <h2 className='card__title'>{name}</h2>
+          <p className='card__duration'>{duration()}</p>
         </div>
         {location.pathname === '/saved-movies' ? (
           <button type='button' onClick={deleteFavoriteMovie} className='card__icon card__delete' />
@@ -30,7 +45,7 @@ function MoviesCard(props) {
           />
         )}
       </div>
-      <img src={movie.image} alt={movie.nameRU} className='card__img' />
+      <img src={cover} alt={name} className='card__img' />
     </li>
   );
 }
