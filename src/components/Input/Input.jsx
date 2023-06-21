@@ -11,6 +11,7 @@ function Input(props) {
         type={props.type}
         name={props.name}
         className={`input__field ${props.errors !== '' && 'input__error'}`}
+        placeholder={props.placeholder}
         {...props}
       />
       <span className={`error error-${props.name}`}>{props.errors}</span>

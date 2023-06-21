@@ -10,7 +10,7 @@ function Register(props) {
   }
 
   return (
-    <>
+    <main>
       <AuthForm
         title={'Добро пожаловать!'}
         textBtn={'Зарегистрироваться'}
@@ -30,6 +30,7 @@ function Register(props) {
           value={values.name || ''}
           onChange={handleChange}
           errors={errors.name || ''}
+          placeholder='Введите имя'
         />
         <Input
           id='email'
@@ -40,6 +41,7 @@ function Register(props) {
           value={values.email || ''}
           onChange={handleChange}
           errors={errors.email || ''}
+          placeholder='Введите e-mail'
         />
         <Input
           id='password'
@@ -51,9 +53,10 @@ function Register(props) {
           value={values.password || ''}
           onChange={handleChange}
           errors={errors.password || ''}
+          placeholder='Введите пароль'
         />
       </AuthForm>
-    </>
+    </main>
   );
 }
 

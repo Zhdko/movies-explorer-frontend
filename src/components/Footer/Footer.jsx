@@ -11,12 +11,17 @@ function Footer(props) {
         <p className='footer__date'>&#169; 2020</p>
         <ul className='footer__links list'>
           <li className='footer__item'>
-            <a href='https://practicum.yandex.ru/' className='footer__link link'>
+            <a href='https://practicum.yandex.ru/' className='footer__link link' target='_blank' rel='noreferrer'>
               Яндекс.Практикум
             </a>
           </li>
           <li className='footer__item'>
-            <a href='https://github.com/yandex-practicum' className='footer__link link'>
+            <a
+              href='https://github.com/yandex-practicum'
+              className='footer__link link'
+              target='_blank'
+              rel='noreferrer'
+            >
               Github
             </a>
           </li>

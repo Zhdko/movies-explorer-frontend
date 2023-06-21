@@ -9,10 +9,10 @@ function Movies(props) {
   return (
     <div>
       <Header loggedIn={true} />
-      <section className='movies'>
+      <main className='movies'>
         <SearchForm />
         <MoviesCardList movies={movies} />
-      </section>
+      </main>
       <Footer />
     </div>
   );
