@@ -4,10 +4,6 @@
   margin-top: 10px;
 }
 
-.input:last-of-type {
-  margin-bottom: 30px;
-}
-
 .input__title {
   margin: 0;
   font-family: 'Inter', Arial, sans-serif;

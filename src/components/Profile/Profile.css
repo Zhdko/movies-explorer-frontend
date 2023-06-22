@@ -4,8 +4,6 @@
   display: flex;
   position: relative;
   max-width: 410px;
-  box-sizing: border-box;
-  padding: 74px 0 70px;
 }
 
 .profile__container {
@@ -15,7 +13,7 @@
   flex-direction: column;
   align-items: center;
   height: 482px;
-  box-sizing: border-box;
+  padding: 74px 0 70px;
 }
 
 .profile__title {
@@ -98,7 +96,6 @@
 }
 
 .profile__btn_type_submit {
-  padding-top: 30px;
   margin: auto 0 16px;
 }
 
@@ -115,8 +112,8 @@
     margin: 0 0 96px;
   }
 
-  .profile {
-    padding: 0 0 33px 0;
+  .profile__container {
+    padding: 40px 0 73px;
   }
 
   .profile__container {
@@ -125,11 +122,11 @@
 }
 
 @media screen and (max-width: 480px) {
-  .profile {
-    padding: 70px 30px 40px;
-  }
   .profile__container {
     height: 100%;
+    box-sizing: border-box;
+    padding: 70px 30px 40px;
+    min-height: 450px;
   }
   .profile__title {
     margin: 0 0 80px;
