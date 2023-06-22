@@ -5,10 +5,9 @@ import { useState } from 'react';
 function MoviesCard(props) {
   const movie = props.movie;
   const location = useLocation();
-  const [isFavorite, setIsFavorite] = useState(false);
 
   const name = movie.nameRU;
-  const cover = 'https://api.nomoreparties.co' + movie.image.url;
+  const cover = props.isFavorite ? movie.image : 'https://api.nomoreparties.co' + movie.image.url;
 
   const duration = () => {
     const minutes = (movie.duration % 60) + 'м';
@@ -22,26 +21,28 @@ function MoviesCard(props) {
     }
   };
 
-  function toggleFavoriteMovie() {
-    setIsFavorite(!isFavorite);
+  function handleLike() {
+    props.isSaved(movie) ? props.handleDelete(movie) : props.handleLike(movie);
   }
 
-  function deleteFavoriteMovie() {}
+  function handleDelete() {
+    props.handleDelete(movie);
+  }
 
   return (
-    <li className='card' key={movie.movieId}>
+    <li className='card'>
       <div className='card__info'>
         <div className='card__discription'>
           <h2 className='card__title'>{name}</h2>
           <p className='card__duration'>{duration()}</p>
         </div>
         {location.pathname === '/saved-movies' ? (
-          <button type='button' onClick={deleteFavoriteMovie} className='card__icon card__delete' />
+          <button type='button' onClick={handleDelete} className='card__icon card__delete' />
         ) : (
           <button
             type='button'
-            onClick={toggleFavoriteMovie}
-            className={`card__icon card__like ${isFavorite && 'card__like_active'}`}
+            onClick={handleLike}
+            className={`card__icon card__like ${props.isSaved(movie) && 'card__like_active'}`}
           />
         )}
       </div>

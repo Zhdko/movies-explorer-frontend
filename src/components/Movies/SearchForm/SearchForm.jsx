@@ -1,26 +1,33 @@
 import { useEffect, useState } from 'react';
-import useValidation from '../../../hooks/useValidation';
 import FilterCheckbox from './FilterCheckbox/FilterCheckbox';
 import './SearchForm.css';
 
 function SearchForm(props) {
-  const { values, errors, handleChange, isValid } = useValidation();
   const [isChecked, setIsChecked] = useState(false);
+  const [movieName, setMovieName] = useState('');
+
+  const isLocalShortFilms = JSON.parse(localStorage.getItem('isShortFilms'));
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.handleSearch(values.search || '', isChecked);
+    props.handleSearch(movieName || '', isChecked);
+  }
+
+  function handleChange(e) {
+    setMovieName(e.target.value);
   }
 
   function handleChangeCheckbox(e) {
     const isShortFilms = e.target.checked;
     setIsChecked(isShortFilms);
-    props.handleSearch(values.search, isShortFilms);
+    props.handleSearch(movieName, isShortFilms);
   }
 
-  // useEffect(() => {
-  //   setIsChecked(localStorage.getItem('isShortFilms') || false);
-  // }, [setIsChecked]);
+  useEffect(() => {
+    setMovieName(props.defaultInputValue);
+    setIsChecked(isLocalShortFilms || false);
+  }, [isLocalShortFilms, props.defaultInputValue]);
+
   return (
     <section className='movies__search-form'>
       <form name='search-form' className='search-form' onSubmit={handleSubmit}>
@@ -31,10 +38,8 @@ function SearchForm(props) {
           className='search-form__input'
           placeholder='Фильм'
           required=''
-          minLength={0}
-          value={values.search || ''}
+          value={movieName}
           onChange={handleChange}
-          errors={errors.search || ''}
         />
         <button className='search-form__submit-btn' type='submit'>
           Поиск

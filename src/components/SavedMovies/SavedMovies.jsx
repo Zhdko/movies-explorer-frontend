@@ -1,18 +1,27 @@
-import movies from '../../utils/moviesList';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../Movies/SearchForm/SearchForm';
-import Preloader from '../Preloader/Preloader';
+import { useState } from 'react';
 
 function SavedMovies(props) {
-  const savedMovies = movies.filter((movie) => movie.hasOwnProperty('owner'));
+  const [filteredMovies, setFilteredMovies] = useState(props.movies);
+
+  function handleSearch(filmName, isShortFilms) {
+    const filteredMovies = props.movies.filter((movie) => movie.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+
+    if (isShortFilms) {
+      setFilteredMovies(filteredMovies.filter((movie) => movie.duration <= 40));
+    }
+    setFilteredMovies(filteredMovies);
+  }
+
   return (
     <div>
       <Header loggedIn={props.loggedIn} />
       <section className='movies'>
-        <SearchForm />
-        {props.isLoading ? <Preloader /> : <MoviesCardList movies={savedMovies} />}
+        <SearchForm handleSearch={props.handleSearch} defaultInputValue='' />
+        <MoviesCardList movies={props.movies} isFavorite={true} handleDelete={props.handleDelete} />
       </section>
       <Footer />
     </div>
