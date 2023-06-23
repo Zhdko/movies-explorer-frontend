@@ -5,7 +5,8 @@ import './MoviesCardList.css';
 
 function MoviesCardList(props) {
   if (props.isLoading) return <Preloader />;
-  if (props.movies.length === 0) return <Message message='Ничего не найдено' />;
+  if (props.movies.length === 0 || props.movies.message)
+    return <Message message={props.movies.message || 'Ничего не найдено'} />;
   if (props.isResultError)
     return (
       <Message

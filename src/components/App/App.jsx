@@ -7,7 +7,7 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import './App.css';
 import NotFound from '../NotFound/NotFound';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProtectedRouteElement from '../ProtectedRoute/ProptectedRoute';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 import * as auth from '../../utils/auth';
@@ -15,7 +15,7 @@ import api from '../../utils/Api';
 import PopupInfo from '../PopupInfo/PopupInfo';
 import movieApi from '../../utils/MoviesApi';
 
-function App(props) {
+function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [infoMessage, setInfoMessage] = useState(null);
@@ -27,9 +27,20 @@ function App(props) {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (loggedIn) {
+      Promise.all([auth.getUserInfo(), api.getSavedMovies()])
+        .then(([userData, moviesData]) => {
+          setCurrentUser(userData);
+          setSavedMovies(moviesData);
+        })
+        .catch((err) => openPopup(err));
+    }
+  }, [loggedIn]);
+
   function getUserInfo() {
-    api
-      .getUserData()
+    auth
+      .getUserInfo()
       .then((user) => {
         setCurrentUser(user);
       })
@@ -63,7 +74,7 @@ function App(props) {
   function handleLogout() {
     auth
       .logout()
-      .then((res) => {
+      .then(() => {
         setLoggedIn(false);
         navigate('/', { replace: true });
       })
@@ -136,7 +147,7 @@ function App(props) {
     api
       .addToFavorites(card)
       .then((res) => {
-        setSavedMovies([...savedMovies, res]);
+        setSavedMovies([res, ...savedMovies]);
       })
       .catch((err) => openPopup(err));
   }
@@ -152,6 +163,29 @@ function App(props) {
       })
       .catch((err) => openPopup(err));
   }
+
+  function tokenCheck() {
+    if (localStorage.getItem('isAuth')) {
+      auth
+        .getUserInfo()
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate('/movies', { replace: true });
+          }
+        })
+        .catch((err) => openPopup(err));
+    }
+  }
+
+  useEffect(() => {
+    const movies = JSON.parse(localStorage.getItem('movies'));
+    setMovies(movies);
+  }, [setMovies]);
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
 
   return (
     <div className='content'>

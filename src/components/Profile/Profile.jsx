@@ -5,12 +5,13 @@ import { useContext, useEffect } from 'react';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 function Profile(props) {
-  const { values, setValues, errors, handleChange, isValid } = useValidation();
+  const { values, setValues, errors, handleChange, isValid, defaultValues } = useValidation();
   const currentUser = useContext(CurrentUserContext);
+  const { name, email } = currentUser;
 
   useEffect(() => {
-    setValues(currentUser);
-  }, [currentUser, setValues]);
+    defaultValues({ name, email });
+  }, [currentUser]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -38,6 +39,7 @@ function Profile(props) {
               maxLength={40}
               value={values.name}
               onChange={handleChange}
+              errors={errors.message}
             />
           </div>
           <span className='error error_type_profile'>{errors.name || ''}</span>
@@ -59,7 +61,7 @@ function Profile(props) {
           <span className='error error_type_profile'>{errors.email || ''}</span>
           <button
             className={`profile__btn profile__btn_type_submit ${!isValid && 'profile__btn_disabled'}`}
-            disabled={!isValid}
+            disabled={!isValid && currentUser.name !== values.name}
             type='submit'
             aria-label='Редактировать профиль'
           >

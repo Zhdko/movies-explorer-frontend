@@ -26,14 +26,6 @@ export class Api {
     return fetch(url, options).then(this._checkResponce);
   }
 
-  getUserData() {
-    const userInfoUrl = `${this._baseUrl}/users/me`;
-    return fetch(userInfoUrl, {
-      headers: this._headers,
-      credentials: 'include',
-    }).then((res) => this._checkResponce(res));
-  }
-
   setUserInfo(userData) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
@@ -75,39 +67,11 @@ export class Api {
     }).then((res) => this._checkResponce(res));
   }
 
-  _setLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: 'PUT',
+  getSavedMovies() {
+    return fetch(`${this._baseUrl}/movies`, {
+      method: 'GET',
       headers: this._headers,
       credentials: 'include',
-    }).then((res) => this._checkResponce(res));
-  }
-
-  _deleteLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: 'DELETE',
-      headers: this._headers,
-      credentials: 'include',
-    }).then((res) => this._checkResponce(res));
-  }
-
-  toggleLike(cardId, isLiked) {
-    console.log(isLiked);
-    if (isLiked) {
-      return this._deleteLike(cardId);
-    } else {
-      return this._setLike(cardId);
-    }
-  }
-
-  editAvatar(link) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: this._headers,
-      credentials: 'include',
-      body: JSON.stringify({
-        avatar: link,
-      }),
     }).then((res) => this._checkResponce(res));
   }
 }

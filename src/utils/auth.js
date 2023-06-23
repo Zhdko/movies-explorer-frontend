@@ -44,16 +44,19 @@ export const logout = () => {
   return fetch(`${BASE_URL}/signout`, {
     method: 'POST',
     credentials: 'include',
-  }).then((res) => getResponse(res));
+  }).then((res) => {
+    localStorage.removeItem('isAuth');
+    getResponse(res);
+  });
 };
 
-// export const getContent = () => {
-//   return fetch(`${BASE_URL}/users/me`, {
-//     method: 'GET',
-//     headers: {
-//       Accept: 'application/json',
-//       'Content-Type': 'application/json',
-//     },
-//     credentials: 'include',
-//   }).then((res) => getResponse(res));
-// };
+export const getUserInfo = () => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  }).then((res) => getResponse(res));
+};
