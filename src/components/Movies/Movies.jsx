@@ -3,8 +3,13 @@ import Header from '../Header/Header';
 import './Movies.css';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from './SearchForm/SearchForm';
+import { useEffect, useState } from 'react';
 
 function Movies(props) {
+  // useEffect(() => {
+  //   console.log(moviesToShow);
+  // }, []);
+
   return (
     <div>
       <Header loggedIn={props.loggedIn} />
@@ -14,10 +19,11 @@ function Movies(props) {
           movies={props.movies}
           isLoading={props.isLoading}
           isResultError={props.isResultError}
-          isFavorite={props.isFavotire}
           handleLike={props.handleLike}
           handleDelete={props.handleDelete}
           isSaved={props.isSaved}
+          moviesLength={props.moviesLength}
+          handleShowMore={props.handleShowMore}
         />
       </main>
       <Footer />

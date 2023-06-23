@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import FilterCheckbox from './FilterCheckbox/FilterCheckbox';
 import './SearchForm.css';
+import { useLocation } from 'react-router-dom';
 
 function SearchForm(props) {
   const [isChecked, setIsChecked] = useState(false);
   const [movieName, setMovieName] = useState('');
+  const location = useLocation();
 
   const isLocalShortFilms = JSON.parse(localStorage.getItem('isShortFilms'));
 
@@ -24,9 +26,11 @@ function SearchForm(props) {
   }
 
   useEffect(() => {
-    setMovieName(props.defaultInputValue);
-    setIsChecked(isLocalShortFilms || false);
-  }, [isLocalShortFilms, props.defaultInputValue]);
+    if (location.pathname === '/movies') {
+      setMovieName(props.defaultInputValue);
+      setIsChecked(isLocalShortFilms || false);
+    }
+  }, []);
 
   return (
     <section className='movies__search-form'>

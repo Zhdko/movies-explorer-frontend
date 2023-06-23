@@ -20,7 +20,6 @@ export class MovieApi {
       headers: this._headers,
     }).then((res) => this._checkResponce(res));
   }
-
 }
 
 const movieApi = new MovieApi({

@@ -1,13 +1,46 @@
+import { useLocation } from 'react-router-dom';
 import Message from '../Message/Message';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
 import './MoviesCardList.css';
+import { useEffect, useRef, useState } from 'react';
 
 function MoviesCardList(props) {
+  const location = useLocation();
+  const [moviesToShow, setMoviesToShow] = useState(props.movies);
+  const ref = useRef(props.moviesLength);
+  let arrMovies = [];
+
+  function loopWhitSlice(start, finish) {
+    const slicedMovies = props.movies.slice(start, finish);
+    arrMovies = arrMovies.concat(slicedMovies);
+    setMoviesToShow(arrMovies);
+  }
+
+  function handleShowMore() {
+    loopWhitSlice(0, ref.current + props.moviesLength);
+    ref.current += props.moviesLength;
+    console.log(props.movies.length);
+    console.log(moviesToShow.length);
+  }
+
+  useEffect(() => {
+    const slicedMovies = props.movies.slice(0, props.moviesLength);
+    setMoviesToShow(slicedMovies);
+  }, [props.movies, props.moviesLength]);
+
+  function renderMessage() {
+    if (location.pathname === '/movies') {
+      if (localStorage.getItem('movies')) {
+        return 'Ничего не найдено';
+      }
+      return 'Введите ключевое слово';
+    }
+    return 'Нет избранных фильмов';
+  }
   if (props.isLoading) return <Preloader />;
-  if (props.movies.length === 0 || props.movies.message)
-    return <Message message={props.movies.message || 'Ничего не найдено'} />;
-  if (props.isResultError)
+  if (props.movies.length === 0) return <Message message={renderMessage()} />;
+  if (props.isResultError) {
     return (
       <Message
         message={
@@ -15,17 +48,16 @@ function MoviesCardList(props) {
         }
       />
     );
+  }
 
   return (
     <div>
       <ul className='cards list'>
-        {props.movies.map((movie) => {
+        {moviesToShow.map((movie) => {
           return (
             <MoviesCard
               key={movie.id || movie.movieId}
               movie={movie}
-              onClick={props.onClick}
-              isFavorite={props.isFavorite}
               handleLike={props.handleLike}
               handleDelete={props.handleDelete}
               isSaved={props.isSaved}
@@ -33,8 +65,8 @@ function MoviesCardList(props) {
           );
         })}
       </ul>
-      {props.movies.length > 6 && (
-        <button type='button' className='show-more-btn'>
+      {props.movies.length > props.moviesLength && props.movies.length !== moviesToShow.length && (
+        <button type='button' className='show-more-btn' onClick={handleShowMore}>
           Ещё
         </button>
       )}

@@ -14,18 +14,21 @@ import * as auth from '../../utils/auth';
 import api from '../../utils/Api';
 import PopupInfo from '../PopupInfo/PopupInfo';
 import movieApi from '../../utils/MoviesApi';
+import { useResize } from '../../hooks/useResize';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [infoMessage, setInfoMessage] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isResultError, setIsResultError] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
+  const [isResultError, setIsResultError] = useState(false);
+  const [moviesLength, setMoviesLength] = useState(7);
 
   const navigate = useNavigate();
+  const windowSize = useResize();
 
   useEffect(() => {
     if (loggedIn) {
@@ -33,6 +36,10 @@ function App() {
         .then(([userData, moviesData]) => {
           setCurrentUser(userData);
           setSavedMovies(moviesData);
+          const movies = JSON.parse(localStorage.getItem('movies'));
+          if (movies) {
+            setMovies(movies);
+          }
         })
         .catch((err) => openPopup(err));
     }
@@ -77,6 +84,8 @@ function App() {
       .then(() => {
         setLoggedIn(false);
         navigate('/', { replace: true });
+        localStorage.clear();
+        setMovies([]);
       })
       .catch((err) => openPopup(err))
       .finally(() => {
@@ -117,10 +126,9 @@ function App() {
       setTimeout(() => closePopup(), 1000);
       return;
     }
-
     setIsLoading(true);
 
-    movieApi
+    return movieApi
       .getMovies()
       .then((res) => {
         const filteredMovies = res.filter((movie) => movie.nameRU.toLowerCase().includes(filmName.toLowerCase()));
@@ -154,7 +162,7 @@ function App() {
 
   function removeFromFavorites(card) {
     const savedMovie = savedMovies.find(
-      (movie) => movie.movieId === (card.movieId || card.id) && movie.owner._id === currentUser._id
+      (movie) => movie.movieId === (card.movieId || card.id) && (movie.owner._id || movie.owner) === currentUser._id
     );
     api
       .removeCard(savedMovie._id)
@@ -179,13 +187,12 @@ function App() {
   }
 
   useEffect(() => {
-    const movies = JSON.parse(localStorage.getItem('movies'));
-    setMovies(movies);
-  }, [setMovies]);
-
-  useEffect(() => {
     tokenCheck();
   }, []);
+
+  useEffect(() => {
+    !windowSize.isScreenSm ? setMoviesLength(5) : setMoviesLength(7);
+  }, [windowSize]);
 
   return (
     <div className='content'>
@@ -206,6 +213,7 @@ function App() {
                 handleLike={addToFavorites}
                 handleDelete={removeFromFavorites}
                 isSaved={isSaved}
+                moviesLength={moviesLength}
               />
             }
           />

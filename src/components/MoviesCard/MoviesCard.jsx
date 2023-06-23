@@ -1,13 +1,12 @@
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css';
-import { useState } from 'react';
 
 function MoviesCard(props) {
   const movie = props.movie;
   const location = useLocation();
 
   const name = movie.nameRU;
-  const cover = props.isFavorite ? movie.image : 'https://api.nomoreparties.co' + movie.image.url;
+  const cover = !movie.image.url ? movie.image : 'https://api.nomoreparties.co' + movie.image.url;
 
   const duration = () => {
     const minutes = (movie.duration % 60) + 'м';
@@ -28,7 +27,6 @@ function MoviesCard(props) {
   function handleDelete() {
     props.handleDelete(movie);
   }
-
   return (
     <li className='card'>
       <div className='card__info'>
@@ -46,7 +44,9 @@ function MoviesCard(props) {
           />
         )}
       </div>
-      <img src={cover} alt={name} className='card__img' />
+      <a className='link' href={movie.trailerLink} target='_blank' rel='noreferrer'>
+        <img src={cover} alt={name} className='card__img' />
+      </a>
     </li>
   );
 }
