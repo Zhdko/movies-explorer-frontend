@@ -10,12 +10,12 @@ function Login(props) {
     props.onLogin(values.email, values.password);
   }
   return (
-    <>
+    <main>
       <AuthForm
         title={'Рады видеть!'}
         textBtn={'Войти'}
         link='/signup'
-        textLink='Зарегистрироваться'
+        textLink='Регистрация'
         subtitle='Еще не зарегистрированы?'
         onSubmit={handleSubmit}
         isValid={isValid}
@@ -29,6 +29,7 @@ function Login(props) {
           value={values.email || ''}
           onChange={handleChange}
           errors={errors.email || ''}
+          placeholder='Введите e-mail'
         />
         <Input
           id='password'
@@ -40,9 +41,10 @@ function Login(props) {
           value={values.password || ''}
           onChange={handleChange}
           errors={errors.password || ''}
+          placeholder='Введите пароль'
         />
       </AuthForm>
-    </>
+    </main>
   );
 }
 

@@ -1,11 +1,18 @@
 .auth {
+  margin: auto;
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+}
+
+.auth__container {
   max-width: 396px;
-  margin: 0 auto;
-  padding: 70px 0;
-  box-sizing: border-box;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin: auto;
+  min-height: 560px;
+  padding: 70px 0;
 }
 
 .auth__title {
@@ -35,6 +42,11 @@
   color: #fff;
   margin-top: auto;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.form__submit-btn:hover {
+  opacity: 0.7;
 }
 
 .form__submit-btn_disabled {
@@ -69,8 +81,11 @@
 }
 
 @media screen and (max-width: 480px) {
-  .auth {
+  .auth__container {
+    height: 100%;
     padding: 56px 30px 30px;
+    min-height: 700px;
+    box-sizing: border-box;
     align-items: center;
   }
   .auth__title {

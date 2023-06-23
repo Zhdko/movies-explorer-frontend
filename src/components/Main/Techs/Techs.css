@@ -69,3 +69,8 @@
     margin-top: 50px;
   }
 }
+@media screen and (max-width: 350px) {
+  .tech-stack {
+    max-width: 250px;
+  }
+}

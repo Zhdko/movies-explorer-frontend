@@ -8,7 +8,7 @@ function Movies(props) {
   return (
     <div>
       <Header loggedIn={props.loggedIn} />
-      <section className='movies'>
+      <main className='movies'>
         <SearchForm handleSearch={props.handleSearch} defaultInputValue={props.defaultInputValue} />
         <MoviesCardList
           movies={props.movies}
@@ -19,7 +19,7 @@ function Movies(props) {
           handleDelete={props.handleDelete}
           isSaved={props.isSaved}
         />
-      </section>
+      </main>
       <Footer />
     </div>
   );

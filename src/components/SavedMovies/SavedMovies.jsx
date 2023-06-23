@@ -19,10 +19,10 @@ function SavedMovies(props) {
   return (
     <div>
       <Header loggedIn={props.loggedIn} />
-      <section className='movies'>
+      <main className='movies'>
         <SearchForm handleSearch={props.handleSearch} defaultInputValue='' />
         <MoviesCardList movies={props.movies} isFavorite={true} handleDelete={props.handleDelete} />
-      </section>
+      </main>
       <Footer />
     </div>
   );

@@ -54,6 +54,11 @@
   line-height: 18px;
   color: #fff;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.search-form__submit-btn:hover {
+  opacity: 0.7;
 }
 
 .search-form__line {
