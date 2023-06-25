@@ -54,17 +54,16 @@ function App() {
       .catch((err) => openPopup(err));
   }
 
-  function handleRegister(password, email, name) {
+  function handleRegister(email, password, name) {
     auth
-      .register(password, email, name)
+      .register(email, password, name)
       .then((res) => {
-        navigate('/signin', { replace: true });
-      })
-      .catch((err) => openPopup(err))
-      .finally(() => {
         openPopup('Вы успешно зарегистрированы!', true);
         setTimeout(() => closePopup(), 1000);
-      });
+        console.log(email, password, name)
+        handleLogin(email, password)
+      })
+      .catch((err) => openPopup(err, false))
   }
 
   function handleLogin(email, password) {
@@ -111,7 +110,7 @@ function App() {
     setIsOpen(true);
     setInfoMessage({
       isSuccessfully: isSuccessfully || false,
-      text: message || message.message || 'Что-то пошло не так!',
+      text: message.message || message || 'Что-то пошло не так!',
     });
   }
 
