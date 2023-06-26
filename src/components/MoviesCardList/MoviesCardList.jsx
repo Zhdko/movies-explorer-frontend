@@ -27,6 +27,7 @@ function MoviesCardList(props) {
   useEffect(() => {
     const slicedMovies = props.movies.slice(0, props.moviesLength);
     setMoviesToShow(slicedMovies);
+    ref.current = props.moviesLength
   }, [props.movies, props.moviesLength]);
 
   function renderMessage() {
