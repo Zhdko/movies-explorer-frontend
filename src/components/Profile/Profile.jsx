@@ -1,7 +1,7 @@
 import './Profile.css';
 import Header from '../Header/Header';
 import useValidation from '../../hooks/useValidation';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 function Profile(props) {
