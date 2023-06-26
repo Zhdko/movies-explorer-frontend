@@ -20,8 +20,6 @@ function MoviesCardList(props) {
   function handleShowMore() {
     loopWhitSlice(0, ref.current + props.moviesLength);
     ref.current += props.moviesLength;
-    console.log(props.movies.length);
-    console.log(moviesToShow.length);
   }
 
   useEffect(() => {

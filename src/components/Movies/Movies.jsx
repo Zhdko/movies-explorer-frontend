@@ -3,13 +3,8 @@ import Header from '../Header/Header';
 import './Movies.css';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from './SearchForm/SearchForm';
-import { useEffect, useState } from 'react';
 
 function Movies(props) {
-  // useEffect(() => {
-  //   console.log(moviesToShow);
-  // }, []);
-
   return (
     <div>
       <Header loggedIn={props.loggedIn} />

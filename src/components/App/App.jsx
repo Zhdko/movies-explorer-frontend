@@ -26,6 +26,7 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [isResultError, setIsResultError] = useState(false);
   const [moviesLength, setMoviesLength] = useState(7);
+  const [allMovies, setAllMovies] =useState([])
 
   const navigate = useNavigate();
   const windowSize = useResize();
@@ -118,6 +119,15 @@ function App() {
     setTimeout(() => setInfoMessage(null), 400);
   }
 
+  function filterMovies(filmName, isShortFilms) {
+    const filteredMovies = JSON.parse(localStorage.getItem('allMovies')).filter((movie) => movie.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+    const movies = isShortFilms ? filteredMovies.filter((movie) => movie.duration <= 40) : filteredMovies;
+    setMovies(movies);
+    localStorage.setItem('movieName', filmName);
+    localStorage.setItem('movies', JSON.stringify(movies));
+    localStorage.setItem('isShortFilms', JSON.stringify(isShortFilms));
+  }
+
   function handleSearch(filmName, isShortFilms) {
     if (filmName === '' || filmName === undefined) {
       openPopup('Нужно ввести ключевое слово', false);
@@ -126,23 +136,23 @@ function App() {
     }
     setIsLoading(true);
 
-    return movieApi
+    if(!localStorage.getItem('allMovies')) {
+      movieApi
       .getMovies()
-      .then((res) => {
-        const filteredMovies = res.filter((movie) => movie.nameRU.toLowerCase().includes(filmName.toLowerCase()));
-        const movies = isShortFilms ? filteredMovies.filter((movie) => movie.duration <= 40) : filteredMovies;
-        setMovies(movies);
-        localStorage.setItem('movieName', filmName);
-        localStorage.setItem('movies', JSON.stringify(movies));
-        localStorage.setItem('isShortFilms', JSON.stringify(isShortFilms));
-      })
-      .catch((err) => {
-        openPopup(err);
-        setIsResultError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+        .then((res) => {
+          localStorage.setItem('allMovies', JSON.stringify(res))
+          filterMovies(filmName, isShortFilms)
+        }).then((res) => console.log(res))
+        .catch((err) => {
+          openPopup(err);
+          setIsResultError(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+    filterMovies(filmName, isShortFilms)
+    setIsLoading(false)
   }
 
   function isSaved(card) {
@@ -177,7 +187,6 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            navigate('/movies', { replace: true });
           }
         })
         .catch((err) => openPopup(err));
