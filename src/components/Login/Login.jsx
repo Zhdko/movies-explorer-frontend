@@ -5,11 +5,10 @@ import Input from '../Input/Input';
 function Login(props) {
   const { values, errors, handleChange, isValid, setIsValid } = useValidation();
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     setIsValid(false)
     e.preventDefault();
-    await props.onLogin(values.email, values.password);
-    setIsValid(true)
+    props.onLogin(values.email, values.password);
   }
   return (
     <main>
