@@ -3,11 +3,13 @@ import AuthForm from '../AuthForm/AuthForm';
 import Input from '../Input/Input';
 
 function Login(props) {
-  const { values, errors, handleChange, isValid } = useValidation();
+  const { values, errors, handleChange, isValid, setIsValid } = useValidation();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
+    setIsValid(false)
     e.preventDefault();
-    props.onLogin(values.email, values.password);
+    await props.onLogin(values.email, values.password);
+    setIsValid(true)
   }
   return (
     <main>
