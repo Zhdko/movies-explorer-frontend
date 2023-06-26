@@ -73,8 +73,8 @@ function Profile(props) {
             </div>
             <span className='error error_type_profile'>{errors.email || ''}</span>
             <button
-              className={`profile__btn profile__btn_type_submit ${isSame && isValid && 'profile__btn_disabled'}`}
-              disabled={isValid}
+              className={`profile__btn profile__btn_type_submit ${isSame || !isValid ? 'profile__btn_disabled' : ''}`}
+              disabled={isSame || !isValid}
               type='submit'
               aria-label='Редактировать профиль'
             >
