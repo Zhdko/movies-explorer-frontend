@@ -15,6 +15,7 @@ import api from '../../utils/Api';
 import PopupInfo from '../PopupInfo/PopupInfo';
 import movieApi from '../../utils/MoviesApi';
 import { useResize } from '../../hooks/useResize';
+import { MOVIE_LENGTH_MD, MOVIE_LENGTH_SM } from '../../utils/constants';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -198,7 +199,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    !windowSize.isScreenSm ? setMoviesLength(5) : setMoviesLength(7);
+    !windowSize.isScreenSm ? setMoviesLength(MOVIE_LENGTH_SM) : setMoviesLength(MOVIE_LENGTH_MD);
   }, [windowSize]);
 
   return (

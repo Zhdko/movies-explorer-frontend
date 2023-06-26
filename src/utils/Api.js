@@ -1,4 +1,4 @@
-import { BASE_URL } from './constants';
+import { BASE_URL, BEGINNING_OF_URL } from './constants';
 
 export class Api {
   constructor({ baseUrl, headers }) {
@@ -49,9 +49,9 @@ export class Api {
         duration: data.duration,
         year: data.year,
         description: data.description,
-        image: 'https://api.nomoreparties.co' + data.image.url,
+        image: BEGINNING_OF_URL + data.image.url,
         trailerLink: data.trailerLink,
-        thumbnail: 'https://api.nomoreparties.co' + data.image.previewUrl,
+        thumbnail: BEGINNING_OF_URL + data.image.previewUrl,
         movieId: data.id,
         nameRU: data.nameRU,
         nameEN: data.nameEN,

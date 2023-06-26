@@ -1,19 +1,20 @@
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css';
+import { BEGINNING_OF_URL, MOVIE_DURATION_HOUR } from '../../utils/constants';
 
 function MoviesCard(props) {
   const movie = props.movie;
   const location = useLocation();
 
   const name = movie.nameRU;
-  const cover = !movie.image.url ? movie.image : 'https://api.nomoreparties.co' + movie.image.url;
+  const cover = !movie.image.url ? movie.image : BEGINNING_OF_URL + movie.image.url;
 
   const duration = () => {
-    const minutes = (movie.duration % 60) + 'м';
-    const hours = Math.floor(movie.duration / 60) + 'ч';
-    if (movie.duration > 60) {
+    const minutes = (movie.duration % MOVIE_DURATION_HOUR) + 'м';
+    const hours = Math.floor(movie.duration / MOVIE_DURATION_HOUR) + 'ч';
+    if (movie.duration > MOVIE_DURATION_HOUR) {
       return hours + ' ' + minutes;
-    } else if (movie.duration === 60) {
+    } else if (movie.duration === MOVIE_DURATION_HOUR) {
       return hours;
     } else {
       return minutes;
