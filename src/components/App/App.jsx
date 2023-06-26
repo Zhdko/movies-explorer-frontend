@@ -60,7 +60,6 @@ function App() {
       .then((res) => {
         openPopup('Вы успешно зарегистрированы!', true);
         setTimeout(() => closePopup(), 1000);
-        console.log(email, password, name)
         handleLogin(email, password)
       })
       .catch((err) => openPopup(err, false))

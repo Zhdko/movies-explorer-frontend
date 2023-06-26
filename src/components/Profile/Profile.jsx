@@ -1,23 +1,33 @@
 import './Profile.css';
 import Header from '../Header/Header';
 import useValidation from '../../hooks/useValidation';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 function Profile(props) {
-  const { values, setValues, errors, handleChange, isValid, defaultValues } = useValidation();
+  const { defaultValues, setIsValid, values, errors, handleChange, isValid} = useValidation()
+  const [ isSame, setIsSame ] = useState(true)
+
   const currentUser = useContext(CurrentUserContext);
   const { name, email } = currentUser;
 
   useEffect(() => {
     defaultValues({ name, email });
+    setIsValid(true)
   }, [currentUser]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    setValues(values);
     props.onEditProfile(values);
   }
+
+  useEffect(() => {
+    if(name !== values.name || email !== values.email) {
+      setIsSame(false)
+    } else {
+      setIsSame(true)
+    }
+  }, [values, currentUser])
 
   return (
     <>
@@ -63,8 +73,8 @@ function Profile(props) {
             </div>
             <span className='error error_type_profile'>{errors.email || ''}</span>
             <button
-              className={`profile__btn profile__btn_type_submit ${!isValid && 'profile__btn_disabled'}`}
-              disabled={!isValid && currentUser.name !== values.name}
+              className={`profile__btn profile__btn_type_submit ${isSame && isValid && 'profile__btn_disabled'}`}
+              disabled={isValid}
               type='submit'
               aria-label='Редактировать профиль'
             >

@@ -19,7 +19,7 @@ function useValidation() {
     setErrors(errors);
   }
 
-  return { values, errors, handleChange, defaultValues, isValid, setValues };
+  return { values, errors, handleChange, defaultValues, isValid, setValues, setIsValid };
 }
 
 export default useValidation;
