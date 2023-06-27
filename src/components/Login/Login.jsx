@@ -3,7 +3,7 @@ import AuthForm from '../AuthForm/AuthForm';
 import Input from '../Input/Input';
 
 function Login(props) {
-  const { values, errors, handleChange, isValid, setIsValid } = useValidation({ email: '', passwod: '' });
+  const { values, errors, handleChange, isValid, setIsValid } = useValidation({ email: '', password: '' });
 
   function handleSubmit(e) {
     setIsValid(false);

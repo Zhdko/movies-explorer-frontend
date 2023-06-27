@@ -5,14 +5,15 @@ import { useContext, useEffect, useState } from 'react';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 function Profile(props) {
-  const { defaultValues, setIsValid, values, errors, handleChange, isValid } = useValidation({ name: '', email: '' });
-  const [isSame, setIsSame] = useState(true);
-
   const currentUser = useContext(CurrentUserContext);
   const { name, email } = currentUser;
+  const { setIsValid, values, errors, handleChange, isValid } = useValidation({
+    name: name,
+    email: email,
+  });
+  const [isSame, setIsSame] = useState(true);
 
   useEffect(() => {
-    defaultValues({ name, email });
     setIsValid(true);
   }, [currentUser]);
 
