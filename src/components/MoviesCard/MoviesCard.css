@@ -7,6 +7,7 @@
 }
 
 .card__img {
+  min-width: 220px;
   width: 220px;
   height: 122px;
   margin: 6px;
@@ -69,7 +70,7 @@
 }
 
 .card__delete {
-  background-image: url('../../images/delete.svg');
+  background-image: url('../../images/d5.svg');
 }
 
 @media screen and (max-width: 768px) {

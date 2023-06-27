@@ -49,6 +49,12 @@
   opacity: 0.7;
 }
 
+.form__submit-btn_disabled {
+  background-color: #2f2f2f;
+  color: #8b8b8b;
+  cursor: default;
+}
+
 .auth__footer {
   display: flex;
   gap: 6px;

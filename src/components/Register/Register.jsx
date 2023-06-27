@@ -3,12 +3,13 @@ import AuthForm from '../AuthForm/AuthForm';
 import Input from '../Input/Input';
 
 function Register(props) {
-  const { values, errors, handleChange } = useValidation();
+  const { values, errors, handleChange, isValid, setIsValid } = useValidation({ name: '', email: '', password: '' });
 
   function handleSubmit(e) {
+    setIsValid(false);
     e.preventDefault();
+    props.onRegister(values.email, values.password, values.name);
   }
-
   return (
     <main>
       <AuthForm
@@ -18,6 +19,7 @@ function Register(props) {
         textLink='Войти'
         subtitle='Уже зарегистрированы?'
         onSubmit={handleSubmit}
+        isValid={isValid}
       >
         <Input
           id='name'

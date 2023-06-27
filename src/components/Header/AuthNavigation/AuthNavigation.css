@@ -19,6 +19,10 @@
   position: relative;
 }
 
+.auth-navigation__item_type_main {
+  display: none;
+}
+
 .active {
   font-weight: 500;
 }
@@ -77,6 +81,9 @@
 
   .auth-navigation__item_type_profile {
     margin: auto 0 0 0;
+  }
+  .auth-navigation__item_type_main {
+    display: block;
   }
 
   .menu_opened {

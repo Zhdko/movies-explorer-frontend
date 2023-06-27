@@ -52,3 +52,8 @@ html {
   color: #ee3465;
   text-align: center;
 }
+
+.content__preloader {
+  height: 100vh;
+  margin: auto;
+}

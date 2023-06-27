@@ -11,13 +11,11 @@ function AuthNavigation(props) {
       <div className={`menu ${props.isOpen && 'menu_opened'}`}>
         <nav>
           <ul className={`auth-navigation list ${props.isOpen && 'auth-navigation_opened'}`}>
-            {props.isOpen && (
-              <li className='auth-navigation__item'>
-                <NavLink className='link auth-navigation__link' to='/'>
-                  Главная
-                </NavLink>
-              </li>
-            )}
+            <li className='auth-navigation__item auth-navigation__item_type_main'>
+              <NavLink className='link auth-navigation__link' to='/'>
+                Главная
+              </NavLink>
+            </li>
             <li className='auth-navigation__item'>
               <NavLink className='link auth-navigation__link' to='/movies'>
                 Фильмы

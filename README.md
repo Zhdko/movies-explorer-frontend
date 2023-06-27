@@ -15,9 +15,9 @@
 
 ### Ссылки
 
-- [gh-pages](https://zhdko.github.io/movies-explorer-frontend/)
+- [site](https://zhdko.movies.nomoredomains.rocks/)
 - [Reposotory](https://github.com/Zhdko/movies-explorer-frontend)
-- [Страница с фильмами](https://zhdko.github.io/movies-explorer-frontend/movies)
+- [Pull request](https://github.com/Zhdko/movies-explorer-frontend/pull/2)
 - [Макет Figma](https://disk.yandex.ru/d/G9VOrplCpbd_8w)
 
 ## Автор

@@ -10,7 +10,7 @@ import Footer from '../Footer/Footer';
 function Main(props) {
   return (
     <>
-      <Header loggedIn={false} />
+      <Header loggedIn={props.loggedIn} />
       <main className=''>
         <Promo />
         <AboutProject />

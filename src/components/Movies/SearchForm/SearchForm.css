@@ -8,6 +8,7 @@
   border: 1.5px solid rgba(170, 170, 170, 0.2);
   border-radius: 8px;
   margin-bottom: 26px;
+  position: relative;
 }
 
 .search-form__input {
@@ -20,6 +21,14 @@
   line-height: 20px;
   color: #fff;
   width: 100%;
+}
+
+.search__error {
+  position: absolute;
+  bottom: -20px;
+  font-size: 15px;
+  left: 0;
+  right: 0;
 }
 
 .search-form__input:focus {
