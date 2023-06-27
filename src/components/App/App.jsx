@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -16,6 +16,7 @@ import PopupInfo from '../PopupInfo/PopupInfo';
 import movieApi from '../../utils/MoviesApi';
 import { useResize } from '../../hooks/useResize';
 import { MOVIE_LENGTH_MD, MOVIE_LENGTH_SM } from '../../utils/constants';
+import Preloader from '../Preloader/Preloader';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -27,24 +28,11 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [isResultError, setIsResultError] = useState(false);
   const [moviesLength, setMoviesLength] = useState(null);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const { pathname } = useLocation();
 
   const navigate = useNavigate();
   const windowSize = useResize();
-
-  useEffect(() => {
-    if (loggedIn) {
-      Promise.all([auth.getUserInfo(), api.getSavedMovies()])
-        .then(([userData, moviesData]) => {
-          setCurrentUser(userData);
-          setSavedMovies(moviesData);
-          const movies = JSON.parse(localStorage.getItem('movies'));
-          if (movies) {
-            setMovies(movies);
-          }
-        })
-        .catch((err) => openPopup(err));
-    }
-  }, [loggedIn]);
 
   function getUserInfo() {
     auth
@@ -61,9 +49,9 @@ function App() {
       .then((res) => {
         openPopup('Вы успешно зарегистрированы!', true);
         setTimeout(() => closePopup(), 1000);
-        handleLogin(email, password)
+        handleLogin(email, password);
       })
-      .catch((err) => openPopup(err, false))
+      .catch((err) => openPopup(err, false));
   }
 
   function handleLogin(email, password) {
@@ -120,7 +108,9 @@ function App() {
   }
 
   function filterMovies(filmName, isShortFilms) {
-    const filteredMovies = JSON.parse(localStorage.getItem('allMovies')).filter((movie) => movie.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+    const filteredMovies = JSON.parse(localStorage.getItem('allMovies')).filter((movie) =>
+      movie.nameRU.toLowerCase().includes(filmName.toLowerCase())
+    );
     const movies = isShortFilms ? filteredMovies.filter((movie) => movie.duration <= 40) : filteredMovies;
     setMovies(movies);
     localStorage.setItem('movieName', filmName);
@@ -136,23 +126,25 @@ function App() {
     }
     setIsLoading(true);
 
-    if(!localStorage.getItem('allMovies')){
+    if (!localStorage.getItem('allMovies')) {
       movieApi
-      .getMovies()
+        .getMovies()
         .then((res) => {
-          localStorage.setItem('allMovies', JSON.stringify(res))
-          filterMovies(filmName, isShortFilms)
-        }).then((res) => console.log(res))
+          localStorage.setItem('allMovies', JSON.stringify(res));
+          filterMovies(filmName, isShortFilms);
+        })
+        .then((res) => console.log(res))
         .catch((err) => {
           openPopup(err);
           setIsResultError(true);
         })
         .finally(() => {
           setIsLoading(false);
-        });} else {
-          filterMovies(filmName, isShortFilms)
-          setIsLoading(false)
-        }
+        });
+    } else {
+      filterMovies(filmName, isShortFilms);
+      setIsLoading(false);
+    }
   }
 
   function isSaved(card) {
@@ -187,6 +179,9 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
+            if (pathname === '/signin' || pathname === '/signup') {
+              navigate('/', { replace: true });
+            }
           }
         })
         .catch((err) => openPopup(err));
@@ -198,62 +193,84 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (loggedIn) {
+      Promise.all([auth.getUserInfo(), api.getSavedMovies()])
+        .then(([userData, moviesData]) => {
+          setCurrentUser(userData);
+          setSavedMovies(moviesData);
+          const movies = JSON.parse(localStorage.getItem('movies'));
+          if (movies) {
+            setMovies(movies);
+          }
+        })
+        .catch((err) => openPopup(err))
+        .finally(() => setIsPageLoading(true));
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
     !windowSize.isScreenSm ? setMoviesLength(MOVIE_LENGTH_SM) : setMoviesLength(MOVIE_LENGTH_MD);
   }, [windowSize]);
 
   return (
     <div className='content'>
-      <CurrentUserContext.Provider value={currentUser}>
-        <Routes>
-          <Route path='/' element={<Main loggedIn={loggedIn} />} />
-          <Route
-            path='/movies'
-            element={
-              <ProtectedRouteElement
-                loggedIn={loggedIn}
-                element={Movies}
-                handleSearch={handleSearch}
-                movies={movies}
-                isLoading={isLoading}
-                isResultError={isResultError}
-                defaultInputValue={localStorage.getItem('movieName') || ''}
-                handleLike={addToFavorites}
-                handleDelete={removeFromFavorites}
-                isSaved={isSaved}
-                moviesLength={moviesLength}
-              />
-            }
-          />
-          <Route
-            path='/saved-movies'
-            element={
-              <ProtectedRouteElement
-                loggedIn={loggedIn}
-                element={SavedMovies}
-                isLoading={isLoading}
-                handleSearch={handleSearch}
-                movies={savedMovies}
-                handleDelete={removeFromFavorites}
-              />
-            }
-          />
-          <Route
-            path='/profile'
-            element={
-              <ProtectedRouteElement
-                loggedIn={loggedIn}
-                element={Profile}
-                onLogout={handleLogout}
-                onEditProfile={handleEditProfile}
-              />
-            }
-          />
-          <Route path='/signin' element={<Login onLogin={handleLogin} />} />
-          <Route path='/signup' element={<Register onRegister={handleRegister} />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-        <PopupInfo message={infoMessage} isOpen={isOpen} onClose={closePopup} />
-      </CurrentUserContext.Provider>
+      {isPageLoading ? (
+        <CurrentUserContext.Provider value={currentUser}>
+          <Routes>
+            <Route path='/' element={<Main loggedIn={loggedIn} />} />
+            <Route
+              path='/movies'
+              element={
+                <ProtectedRouteElement
+                  loggedIn={loggedIn}
+                  element={Movies}
+                  handleSearch={handleSearch}
+                  movies={movies}
+                  isLoading={isLoading}
+                  isResultError={isResultError}
+                  defaultInputValue={localStorage.getItem('movieName') || ''}
+                  handleLike={addToFavorites}
+                  handleDelete={removeFromFavorites}
+                  isSaved={isSaved}
+                  moviesLength={moviesLength}
+                />
+              }
+            />
+            <Route
+              path='/saved-movies'
+              element={
+                <ProtectedRouteElement
+                  loggedIn={loggedIn}
+                  element={SavedMovies}
+                  isLoading={isLoading}
+                  handleSearch={handleSearch}
+                  movies={savedMovies}
+                  handleDelete={removeFromFavorites}
+                />
+              }
+            />
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRouteElement
+                  loggedIn={loggedIn}
+                  element={Profile}
+                  onLogout={handleLogout}
+                  onEditProfile={handleEditProfile}
+                />
+              }
+            />
+            <Route path='/signin' element={<Login onLogin={handleLogin} />} />
+            <Route path='/signup' element={<Register onRegister={handleRegister} />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+          <PopupInfo message={infoMessage} isOpen={isOpen} onClose={closePopup} />
+        </CurrentUserContext.Provider>
+      ) : (
+        <div className='content__preloader'>
+          <Preloader />
+        </div>
+      )}
     </div>
   );
 }
