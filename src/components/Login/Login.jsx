@@ -3,10 +3,10 @@ import AuthForm from '../AuthForm/AuthForm';
 import Input from '../Input/Input';
 
 function Login(props) {
-  const { values, errors, handleChange, isValid, setIsValid } = useValidation();
+  const { values, errors, handleChange, isValid, setIsValid } = useValidation({ email: '', passwod: '' });
 
   function handleSubmit(e) {
-    setIsValid(false)
+    setIsValid(false);
     e.preventDefault();
     props.onLogin(values.email, values.password);
   }

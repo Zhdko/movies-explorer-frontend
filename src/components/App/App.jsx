@@ -188,6 +188,8 @@ function App() {
           setIsPageLoading(true);
           openPopup(err);
         });
+    } else {
+      setIsPageLoading(true);
     }
   }
 

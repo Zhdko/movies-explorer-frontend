@@ -5,15 +5,15 @@ import { useContext, useEffect, useState } from 'react';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 function Profile(props) {
-  const { defaultValues, setIsValid, values, errors, handleChange, isValid} = useValidation()
-  const [ isSame, setIsSame ] = useState(true)
+  const { defaultValues, setIsValid, values, errors, handleChange, isValid } = useValidation({ name: '', email: '' });
+  const [isSame, setIsSame] = useState(true);
 
   const currentUser = useContext(CurrentUserContext);
   const { name, email } = currentUser;
 
   useEffect(() => {
     defaultValues({ name, email });
-    setIsValid(true)
+    setIsValid(true);
   }, [currentUser]);
 
   function handleSubmit(e) {
@@ -22,12 +22,12 @@ function Profile(props) {
   }
 
   useEffect(() => {
-    if(name !== values.name || email !== values.email) {
-      setIsSame(false)
+    if (name !== values.name || email !== values.email) {
+      setIsSame(false);
     } else {
-      setIsSame(true)
+      setIsSame(true);
     }
-  }, [values, currentUser])
+  }, [values, currentUser]);
 
   return (
     <>
