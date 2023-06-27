@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function useValidation() {
-  const [values, setValues] = useState({});
+function useValidation(keys) {
+  const [values, setValues] = useState(keys);
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
@@ -18,6 +18,13 @@ function useValidation() {
     setValues(values);
     setErrors(errors);
   }
+
+  useEffect(() => {
+    const isEmpty = Object.values(values).some((value) => value === '');
+    if (isEmpty) {
+      setIsValid(false);
+    }
+  }, [values]);
 
   return { values, errors, handleChange, defaultValues, isValid, setValues, setIsValid };
 }

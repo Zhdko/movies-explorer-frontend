@@ -184,7 +184,10 @@ function App() {
             }
           }
         })
-        .catch((err) => openPopup(err));
+        .catch((err) => {
+          setIsPageLoading(true);
+          openPopup(err);
+        });
     }
   }
 

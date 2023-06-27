@@ -3,14 +3,13 @@ import AuthForm from '../AuthForm/AuthForm';
 import Input from '../Input/Input';
 
 function Register(props) {
-  const { values, errors, handleChange, isValid, setIsValid } = useValidation();
+  const { values, errors, handleChange, isValid, setIsValid } = useValidation({ name: '', email: '', password: '' });
 
   function handleSubmit(e) {
-    setIsValid(false)
+    setIsValid(false);
     e.preventDefault();
     props.onRegister(values.email, values.password, values.name);
   }
-
   return (
     <main>
       <AuthForm
