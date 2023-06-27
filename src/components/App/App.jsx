@@ -26,8 +26,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
   const [isResultError, setIsResultError] = useState(false);
-  const [moviesLength, setMoviesLength] = useState(7);
-  const [allMovies, setAllMovies] =useState([])
+  const [moviesLength, setMoviesLength] = useState(null);
 
   const navigate = useNavigate();
   const windowSize = useResize();
@@ -137,7 +136,7 @@ function App() {
     }
     setIsLoading(true);
 
-    if(!localStorage.getItem('allMovies')) {
+    if(!localStorage.getItem('allMovies')){
       movieApi
       .getMovies()
         .then((res) => {
@@ -150,10 +149,10 @@ function App() {
         })
         .finally(() => {
           setIsLoading(false);
-        });
-    }
-    filterMovies(filmName, isShortFilms)
-    setIsLoading(false)
+        });} else {
+          filterMovies(filmName, isShortFilms)
+          setIsLoading(false)
+        }
   }
 
   function isSaved(card) {
