@@ -67,7 +67,7 @@
   font-weight: 400;
   font-size: 11px;
   line-height: 13.31px;
-  color: #fff;
+  color: #8b8b8b;
 }
 
 .profile-form__label {
@@ -92,7 +92,7 @@
 }
 
 .profile__btn_disabled {
-  color: #000;
+  color: #8b8b8b;
   cursor: default;
 }
 
